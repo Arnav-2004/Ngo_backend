@@ -1,6 +1,7 @@
 import mongoose, { model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { UserRole, UserStatus } from "./user.enum";
+import { verifyValue } from "../../utils/auth.utils";
 
 const userSchema = new Schema({
     name: {
@@ -10,11 +11,15 @@ const userSchema = new Schema({
     email: {
         type: String,
         unique: true,
-        required: true,
+        required: [true, "Email is required"],
+        lowercase: true,
+        trim: true,
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"],
     },
     password: {
         type: String,
         required: true,
+        minLength: [6, "Password must be atleast 6 characters"]
     },
     role: {
         type: String,
@@ -45,7 +50,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.methods.passwordMatch = function (enteredPassword) {
-    return bcrypt.compare(enteredPassword, this.password);
+    return verifyValue(enteredPassword, this.password);
 };
 
 const User = model("User", userSchema);
