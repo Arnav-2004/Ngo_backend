@@ -1,4 +1,4 @@
-const stripUserData = (userDocument) => {
+export const stripUserData = (userDocument) => {
     const {
         _id,
         email,

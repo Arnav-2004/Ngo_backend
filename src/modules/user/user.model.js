@@ -4,10 +4,6 @@ import { UserRole, UserStatus } from "./user.enum";
 import { verifyValue } from "../../utils/auth.utils";
 
 const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
     email: {
         type: String,
         unique: true,
