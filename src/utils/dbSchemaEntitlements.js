@@ -1,68 +1,121 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-const dbSchemaEntitlements = new mongoose.Schema(
+const entitlementSchema = new mongoose.Schema(
   {
+    // Basic Info
     basicInfo: {
-      householdCode: { type: String, required: true },
-      uniqueId: { type: String, required: true, unique: true },
-      name: { type: String, required: true },
-      gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-      age: { type: Number, min: 0 },
-      contactNo: { type: String },
-      headOfHousehold: { type: String },
-      wardNo: { type: Number, required: true },
-      habitation: { type: String },
-      projectResponsible: { type: String },
-    },
-
-    entitlementDetails: {
-      schemeName: { type: String, required: true },
-      category: {
+      householdCode: {
         type: String,
-        enum: ["Health", "Education", "Social Security", "Livelihood", "Other"],
         required: true,
       },
-      type: { type: String, enum: ["Central", "State", "Local"], required: true },
-      eligibilityStatus: {
+      idCode: {
         type: String,
-        enum: ["Eligible", "Not Eligible", "Pending"],
-        default: "Pending",
+        required: true,
       },
-      applicationDate: { type: Date },
-      appliedBy: { type: String },
-    },
-
-    statusTracking: {
-      applicationStatus: {
+      name: {
         type: String,
-        enum: ["Applied", "In Process", "Approved", "Rejected"],
-        default: "Applied",
+        required: true,
       },
-      approvalDate: { type: Date },
-      applicationRefNo: { type: String },
-      authority: { type: String },
-      remarks: { type: String },
+      gender: {
+        type: String,
+        required: true,
+        enum: ["male", "female", "other"],
+      },
+      age: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      headOfHousehold: {
+        type: String,
+        required: true,
+      },
+      contactNo: {
+        type: String,
+        required: false,
+      },
+      wardNo: {
+        type: String,
+        required: true,
+      },
+      habitation: {
+        type: String,
+        required: true,
+      },
+      projectResponsible: {
+        type: String,
+        required: true,
+      },
     },
 
-    benefitsReceived: {
-      benefitType: { type: String, enum: ["Cash", "Kind", "Service"] },
-      value: { type: Number, min: 0 },
-      receiptDate: { type: Date },
-      renewalDue: { type: Date },
+    // Reporting Details
+    reportingDetails: {
+      dateOfReporting: {
+        type: Date,
+        required: true,
+      },
+      reportedBy: {
+        type: String,
+        required: true,
+      },
     },
 
-    supportingDocs: [
-      {
-        documentType: { type: String },
-        submitted: { type: Boolean, default: false },
-        verifiedBy: { type: String },
-        dateVerified: { type: Date },
+    // For ID Proof & Domicile Status
+    idProofAndDomicile: {
+      typeOfDocument: {
+        type: String,
+        required: false,
       },
-    ],
+      natureOfIssue: {
+        type: String,
+        required: false,
+      },
+      status: {
+        type: String,
+        required: false,
+      },
+    },
 
-    photo: { type: String },
+    // For Schemes
+    schemes: {
+      dateOfReporting: {
+        type: Date,
+        required: false,
+      },
+      eligibleSchemes: {
+        type: [String],
+        default: [],
+      },
+      natureOfIssue: {
+        type: String,
+        required: false,
+      },
+      status: {
+        type: String,
+        required: false,
+      },
+    },
+
+    // Progress Reporting (FY 2025–26)
+    progressReporting: {
+      jan25: { type: String, required: false },
+      feb25: { type: String, required: false },
+      mar25: { type: String, required: false },
+      apr25: { type: String, required: false },
+      may25: { type: String, required: false },
+      jun25: { type: String, required: false },
+      jul25: { type: String, required: false },
+      aug25: { type: String, required: false },
+      sep25: { type: String, required: false },
+      oct25: { type: String, required: false },
+      nov25: { type: String, required: false },
+      dec25: { type: String, required: false },
+      jan26: { type: String, required: false },
+      feb26: { type: String, required: false },
+      mar26: { type: String, required: false },
+    },
   },
   { timestamps: true }
 );
 
-export { dbSchemaEntitlements };
+module.exports = mongoose.model("Entitlement", entitlementSchema);
