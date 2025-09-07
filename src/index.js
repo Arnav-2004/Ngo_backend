@@ -10,7 +10,7 @@ import indexRouter from "./routers/index.js";
 import { appConfig } from "./config/appConfig.js";
 
 const app = express();
-dbConnect();
+ await dbConnect();
 
 const whitelist = appConfig.whiteList.split(",");
 
